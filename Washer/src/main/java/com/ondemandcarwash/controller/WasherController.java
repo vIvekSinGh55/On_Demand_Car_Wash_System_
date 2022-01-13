@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,6 +29,7 @@ import com.ondemandcarwash.service.WasherService;
 
 @RestController
 @RequestMapping("/washer")
+@CrossOrigin(origins = "http://localhost:4200")
 public class WasherController 
 {
 	@Autowired
@@ -42,55 +44,38 @@ public class WasherController
 	@Autowired
 	private AuthenticationManager authenticationManager;
 	
+	
 	@GetMapping("/msg")
 	public String message() {
 		return "Hello! Welcome form Washer page";
-	}
-	
-	/*
-	//Creating/Adding Washer
-	@PostMapping("/addwasher")
-	public Washer saveWasher(@RequestBody Washer washer) 
-	{
-		return washerService.addWasher(washer);
-	}
-	*/
-	//Adding Washer with Security
-	@PostMapping("/addwasher")
-	private ResponseEntity<?> saveWasher(@RequestBody Washer washer){
-		
-		String email = washer.getWasherEmail();
-		String password = washer.getWasherPassword();
-		Washer washer1 = new Washer();
-		washer1.setWasherEmail(email);
-		washer1.setWasherPassword(password);
-		try {
-			washerRepository.save(washer);
-			
-		} catch (Exception e) {
-			return ResponseEntity.ok(new WasherAuthResponse("Error creating washer "+ email));
-		}
-		return ResponseEntity.ok(new WasherAuthResponse("Successfully created washer "+ email));
-		
-		
 	}
 	
 	
 	//authenticating washer
 	@PostMapping("/auth")
 	private ResponseEntity<?> authWasher(@RequestBody Washer washer){
-		String email = washer.getWasherEmail();
-		String password = washer.getWasherPassword();
+		String email = washer.getEmail();
+		String password = washer.getPassword();
 		try {
 			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
-			
-		} catch (Exception e) {
-			
+				
+		} catch (Exception e){
+				
 			return ResponseEntity.ok(new WasherAuthResponse("Error during  washer Authentication"+ email));
 		}
 		return ResponseEntity.ok(new WasherAuthResponse("Successfully Authenticated washer"+ email));
-		
+			
 	}
+	
+	
+
+	//Creating/Adding Washer
+	@PostMapping("/addwasher")
+	public Washer saveWasher(@RequestBody Washer washer) 
+	{
+		return washerService.addWasher(washer);
+	}
+	
 	
 	
 	//Reading all washer
@@ -124,16 +109,15 @@ public class WasherController
 	
 	// Deleting Washer Data by Id 
 	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<Object> deleteWasher (@PathVariable int id)
+	public ResponseEntity<Object> deleteWasher(@PathVariable int id)
 	{
-		
-			washerService.deleteById(id);
-			return new ResponseEntity<Object>("Washer deleted with id"+id,HttpStatus.OK);
-
-
+		washerService.deleteById(id);
+		return new ResponseEntity<Object>("Washer deleted with id"+id,HttpStatus.OK);
 	}
 	
-
+	
+//-------------------------------------------Order--------------------------------------------------//
+	
 	//Reading all orders 
 	@GetMapping("/allorders")
 	public List<Order> getallorders()
@@ -144,15 +128,26 @@ public class WasherController
 		return Arrays.asList(allorders);
 	}
 
+	//Reading orders By Id 
+	@GetMapping("/orders/{id}")
+	public Order getOrderById(@PathVariable("id") int id) 
+	{
+		return restTemplate.getForObject("http://localhost:8084/order/orders/" + id, Order.class);
+	}
+	
+	
+	//------------------------------------Ratings----------------------------------------------------//
 	
 	//Reading all ratings from washer 
 	@GetMapping("/allratings")
-	public List<Ratings> getallratings(){
+	public List<Ratings> getallratings()
+	{
 		String baseurl="http://localhost:8083/admin/allratings";
 		Ratings[] allratings=restTemplate.getForObject(baseurl, Ratings[].class);
 		
 		return Arrays.asList(allratings);
 	}
+	
 	
 	
 	

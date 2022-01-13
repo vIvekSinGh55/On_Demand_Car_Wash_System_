@@ -4,7 +4,6 @@ import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -16,18 +15,18 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import com.ondemandcarwash.service.WasherService;
+import com.ondemandcarwash.service.AdminService;
 
 @EnableWebSecurity
-public class WasherSecurityConfig extends WebSecurityConfigurerAdapter {
+public class AdminSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Autowired
-	private WasherService washerService;
+	private AdminService adminService;
 	
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 
-		auth.userDetailsService(washerService);
+		auth.userDetailsService(adminService);
 	}
 	
 	@Override
@@ -36,8 +35,7 @@ public class WasherSecurityConfig extends WebSecurityConfigurerAdapter {
 		http
 		.csrf().disable()
 		.authorizeRequests()
-		.antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-		.antMatchers("/washer/addwasher", "/washer/auth", "/admin/allwashers/","/admin/removewasher/{id}/","/washer/**")
+		.antMatchers("/admin/addadmin", "/admin/auth", "/admin/getallwasher/","/admin/getwasher/{id}/","/admin/**")
 		.permitAll()
 		.anyRequest()
 		.authenticated().and().formLogin();
@@ -48,7 +46,7 @@ public class WasherSecurityConfig extends WebSecurityConfigurerAdapter {
 		return NoOpPasswordEncoder.getInstance();
 
 	}
-
+	
 	@Override
 	@Bean
 	public AuthenticationManager authenticationManagerBean() throws Exception {
@@ -57,8 +55,7 @@ public class WasherSecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 	
 	@Bean
-    CorsConfigurationSource corsConfigurationSource()
-	{
+    CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedMethods(Arrays.asList("http://localhost:4200"));
         configuration.setAllowedMethods(Arrays.asList("GET","POST"));

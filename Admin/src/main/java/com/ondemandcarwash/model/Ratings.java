@@ -7,22 +7,46 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Ratings 
 {
 	@Id
+	private int washerId;
+	private String status;
 	private int rating;
-	private String washerName;
-	private String comment;
+	private String review;
 	
 	
 	public Ratings() 
 	{
 		
 	}
+
 	
-	public Ratings(int rating, String washerName, String comment) 
-	{
+
+	public Ratings(int washerId, String status, int rating, String review) {
 		super();
+		this.washerId = washerId;
+		this.status = status;
 		this.rating = rating;
-		this.washerName = washerName;
-		this.comment = comment;
+		this.review = review;
+	}
+
+
+
+	public int getWasherId() {
+		return washerId;
+	}
+
+
+	public void setWasherId(int washerId) {
+		this.washerId = washerId;
+	}
+
+
+	public String getStatus() {
+		return status;
+	}
+
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 
@@ -36,29 +60,26 @@ public class Ratings
 	}
 
 
-	public String getWasherName() {
-		return washerName;
+	public String getReview() {
+		return review;
 	}
 
 
-	public void setWasherName(String washerName) {
-		this.washerName = washerName;
+	public void setReview(String review) {
+		this.review = review;
 	}
 
 
-	public String getComment() {
-		return comment;
-	}
-
-
-	public void setComment(String comment) {
-		this.comment = comment;
-	}
 
 	@Override
 	public String toString() {
-		return "Ratings [rating=" + rating + ", washerName=" + washerName + ", comment=" + comment + "]";
+		return "Ratings [washerId=" + washerId + ", status=" + status + ", rating=" + rating + ", review=" + review
+				+ "]";
 	}
+
+
+	
+
 	
 	
 	

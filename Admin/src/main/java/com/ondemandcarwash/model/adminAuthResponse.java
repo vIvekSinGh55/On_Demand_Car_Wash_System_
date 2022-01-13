@@ -1,10 +1,14 @@
 package com.ondemandcarwash.model;
 
-public class WasherAuthResponse {
+public class adminAuthResponse {
 
 	private String Response;
+	
+	public adminAuthResponse() {
+		
+	}
 
-	public WasherAuthResponse(String response) {
+	public adminAuthResponse(String response) {
 		super();
 		Response = response;
 	}
@@ -15,11 +19,6 @@ public class WasherAuthResponse {
 
 	public void setResponse(String response) {
 		Response = response;
-	}
-
-	@Override
-	public String toString() {
-		return "WasherAuthResponse [Response=" + Response + "]";
 	}
 
 	

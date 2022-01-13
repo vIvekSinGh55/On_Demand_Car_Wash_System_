@@ -4,6 +4,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 import com.ondemandcarwash.model.Ratings;
 
-public interface RatingRepository extends MongoRepository<Ratings, String>{
+public interface RatingRepository extends MongoRepository<Ratings, Integer>
+{
 
 }

@@ -11,7 +11,6 @@ public class Order
 	private String carName;
 	private String carModel;
 	private String wName;
-	private int washPackId;
 	private String date;
 	private long phoneNo;
 	
@@ -19,16 +18,13 @@ public class Order
 	{
 		
 	}
-	
-	public Order(int orderId, String carName, String carModel, String wName, int washPackId, String date,
-			long phoneNo) 
-	{
+
+	public Order(int orderId, String carName, String carModel, String wName, String date, long phoneNo) {
 		super();
 		this.orderId = orderId;
 		this.carName = carName;
 		this.carModel = carModel;
 		this.wName = wName;
-		this.washPackId = washPackId;
 		this.date = date;
 		this.phoneNo = phoneNo;
 	}
@@ -65,14 +61,6 @@ public class Order
 		this.wName = wName;
 	}
 
-	public int getWashPackId() {
-		return washPackId;
-	}
-
-	public void setWashPackId(int washPackId) {
-		this.washPackId = washPackId;
-	}
-
 	public String getDate() {
 		return date;
 	}
@@ -92,8 +80,9 @@ public class Order
 	@Override
 	public String toString() {
 		return "Order [orderId=" + orderId + ", carName=" + carName + ", carModel=" + carModel + ", wName=" + wName
-				+ ", washPackId=" + washPackId + ", date=" + date + ", phoneNo=" + phoneNo + "]";
+				+ ", date=" + date + ", phoneNo=" + phoneNo + "]";
 	}
+	
 	
 	
 	

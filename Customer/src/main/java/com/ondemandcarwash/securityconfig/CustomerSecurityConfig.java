@@ -1,10 +1,11 @@
 package com.ondemandcarwash.securityconfig;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -16,33 +17,39 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import com.ondemandcarwash.service.WasherService;
+import com.ondemandcarwash.service.CustomerService;
 
 @EnableWebSecurity
-public class WasherSecurityConfig extends WebSecurityConfigurerAdapter {
+public class CustomerSecurityConfig extends WebSecurityConfigurerAdapter {
+	
 	
 	@Autowired
-	private WasherService washerService;
-	
+	private CustomerService customerService;
+	/*
+	 * @Override public void configure(WebSecurity web) throws Exception {
+	 * web.ignoring().antMatchers("/v2/api-docs", "/swagger-resources/**",
+	 * "/swagger-ui.html", "/webjars/**"); }
+	 */
+
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 
-		auth.userDetailsService(washerService);
+		auth.userDetailsService(customerService);
 	}
-	
+
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 
 		http
-		.csrf().disable()
+		.csrf()
+		.disable()
 		.authorizeRequests()
-		.antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-		.antMatchers("/washer/addwasher", "/washer/auth", "/admin/allwashers/","/admin/removewasher/{id}/","/washer/**")
+		.antMatchers("/customer/addcustomer", "/customer/auth","/customer/**")
 		.permitAll()
 		.anyRequest()
 		.authenticated().and().formLogin();
 	}
-	
+
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return NoOpPasswordEncoder.getInstance();
@@ -57,16 +64,20 @@ public class WasherSecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 	
 	@Bean
-    CorsConfigurationSource corsConfigurationSource()
-	{
+    CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedMethods(Arrays.asList("http://localhost:4200"));
-        configuration.setAllowedMethods(Arrays.asList("GET","POST"));
+
+        configuration.setAllowedOrigins(Collections.singletonList("http://localhost:4200"));
+        configuration.setAllowedHeaders(List.of("*"));
+        configuration.setAllowedMethods(Arrays.asList("GET","POST", "OPTIONS"));
+        configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
 
         return source;
     }
+
+	
 
 }

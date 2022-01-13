@@ -7,6 +7,9 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import com.ondemandcarwash.model.Customer;
+import com.ondemandcarwash.model.CustomerAuthResponse;
 import com.ondemandcarwash.model.Order;
 import com.ondemandcarwash.model.Payments;
 import com.ondemandcarwash.model.Ratings;
@@ -27,6 +31,7 @@ import com.ondemandcarwash.service.CustomerService;
 
 @RestController
 @RequestMapping("/customer")
+@CrossOrigin(origins = "http://localhost:4200")
 public class CustomerController 
 {
 
@@ -41,12 +46,35 @@ public class CustomerController
 	@Autowired
 	private CustomerRepository customerRepository;
 	
+	@Autowired
+	private AuthenticationManager authenticationManager;
+	
 	
 	
 	@GetMapping("/msg")
 	public String message() 
 	{
 		return "hello! WELCOME";
+	}
+	
+	//authenticating customer
+	@PostMapping("/auth")
+	private ResponseEntity<?> authCustomer(@RequestBody Customer customer)
+	{
+		String email = customer.getEmail();
+		String password = customer.getPassword();
+		try 
+		{
+			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
+				
+		} catch (Exception e)
+		{
+				
+			return ResponseEntity.ok(new CustomerAuthResponse("Error during  customer Authentication "+ email));
+		}
+		
+		return ResponseEntity.ok(new CustomerAuthResponse("Successfully Authenticated customer "+ email));
+			
 	}
 	
 	
@@ -98,41 +126,51 @@ public class CustomerController
 		
 	}
 	
+	//---------------------------------------Order-------------------------------------------------//
 	
-	//the Customer can AddOrder and Delete Order
-	
+	//the Customer can AddOrder and Cancel Order
 	
 	// For Adding Order
 	@PostMapping("/addorder") 
 	public String addOrder (@RequestBody Order order) 
 	{
-	  return restTemplate.postForObject("http://localhost:8084/order/addorder", order , String.class);
+	  return restTemplate.postForObject("http://Order-Service/order/addorder", order , String.class);
 	}
 	
 	// for Deleting Order
 	@DeleteMapping("/cancelorder/{id}")
-	public String deleteorder(@PathVariable("id") int id) 
+	public String deleteOrder(@PathVariable("id") int id) 
 	{
-		restTemplate.delete("http://localhost:8084/order/delete/" +id , String.class);
+		restTemplate.delete("http://Order-Service/order/delete/" +id , String.class);
 		return "Your Order is successfully Canceled " + id;
 	}
+	
+	
+	//---------------------------------------------------WashPacks----------------------------------//
 
 	//Reading all washpacks
 	@GetMapping("/allpacks")
-	public List<WashPack> getallpack()
+	public List<WashPack> getAllPack()
 	{
-		String baseurl="http://localhost:8083/admin/allpacks";
+		String baseurl="http://Admin-Service/admin/allpacks";
 		WashPack[] allwashpack=restTemplate.getForObject(baseurl, WashPack[].class);
 		
 		return Arrays.asList(allwashpack);
 	}
 	
+	
+	//-------------------------------------------Ratings----------------------------------------//
+	
 	//For adding ratings
 	@PostMapping("/addrating") 
-	public String addrating(@RequestBody Ratings rating) 
+	public String addRating(@RequestBody Ratings rating) 
 	{
-	  return restTemplate.postForObject("http://localhost:8083/admin/addrating", rating , String.class);
+	  return restTemplate.postForObject("http://Admin-Service/admin/addrating", rating , String.class);
 	}
+	
+	
+	
+	//-------------------------------------------Payments------------------------------------------//
 	
 	//for adding Payments
 	@PostMapping("/pay") 

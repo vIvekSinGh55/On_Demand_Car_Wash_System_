@@ -19,13 +19,13 @@ public class WasherService implements UserDetailsService
 	@Autowired
 	private WasherRepository washerRepository;
 	
-  /*  
+  
 	//for creating/adding washer
 	public Washer addWasher(Washer washer)
 	{
 		return washerRepository.save(washer);
 	}
-  */
+ 
 	
 	////For getting All Washer
 	public List<Washer> getWashers() 
@@ -43,13 +43,22 @@ public class WasherService implements UserDetailsService
 		
 	}
 	
+	//For deleting
+	public void deleteWasher(Washer washer) 
+	{
+		washerRepository.delete(washer);
+	}
+	
+
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		Washer foundedWasher = washerRepository.findBywasherEmail(username);
+		Washer foundedWasher = washerRepository.findByEmail(username);
 		
 		if  (foundedWasher ==null) return null;
-		String washerEmail = foundedWasher.getWasherEmail();
-		String washerPassword = foundedWasher.getWasherPassword();
-		return new User(washerEmail, washerPassword, new ArrayList<>());
+		String Email = foundedWasher.getEmail();
+		String Password = foundedWasher.getPassword();
+		return new User(Email, Password, new ArrayList<>());
 	}
+	
+	
 }
