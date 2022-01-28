@@ -1,0 +1,29 @@
+<!-- <p>admin-login works!</p> -->
+<div class="banner">
+<span id="heading"><b>ADMIN LOGIN</b></span>
+<div class="loginForm">
+  <div id="icon">
+    <img src="/assets/images/adminicon.png" style="width: 140px;">
+  </div>
+ 
+  <!-- Form -->
+  <form #loginForm="ngForm" (ngSubmit) = "login(loginForm)" ngNativeValidate>
+       
+      <!-- EMAIL INPUT --> 
+      <div class="form-group mb-3">
+        <label for="email" class="form-label">Email address:</label>
+        <input type="email" class="form-control" id="email" name ="aEmail" placeholder="admin email address" ngModel required>
+        <small class="text-danger" > {{emailError}}</small>
+      </div>
+
+      <!-- PASSWORD INPUT --> 
+      <div class="form-group mb-3">
+        <label for="password" class="form-label">Password:</label>
+        <input type="password" class="form-control" id="password" name="aPassword" placeholder="enter a password" ngModel required minlength="4" maxlength="8">
+        <small class="text-danger"> {{passwordError}}</small>
+      </div>
+
+      <button type="submit" class="btn btn-primary">Login</button>
+  </form>
+</div>
+</div>
