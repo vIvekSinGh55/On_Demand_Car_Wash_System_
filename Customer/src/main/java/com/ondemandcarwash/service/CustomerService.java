@@ -45,11 +45,18 @@ public class CustomerService implements UserDetailsService
 	}
 
 	//For deleting By Id
-	public void deleteById(int id) 
+	public void deleteById(String id) 
 	{
 		customerRepository.deleteById(id);
 			
 	}
+	
+	//For get customer by email_Id
+	public Customer getCustomerByEmail(String email) 
+	{
+		return customerRepository.findByEmail(email);
+	}
+	
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

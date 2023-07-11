@@ -35,9 +35,9 @@ class CustomerApplicationTests
 	{
 		
 		when(repository.findAll()).thenReturn(Stream
-				.of(new Customer(22, "xyz","546477","xyz1@gamil","Kalyan","xyz123"),
-						new Customer(12, "Nikhil","986543","nikhil@gamil","Thane","nikhil123"),
-						new Customer(15, "Hemanth","56743","hemanth12@gamil","Goa","hemanth123"))
+				.of(new Customer("A22", "xyz","546477","xyz1@gamil","Kalyan","xyz123"),
+						new Customer("A12", "Nikhil","986543","nikhil@gamil","Thane","nikhil123"),
+						new Customer("A15", "Hemanth","56743","hemanth12@gamil","Goa","hemanth123"))
 				.collect(Collectors.toList()));
 		assertEquals(3, service.getCustomers().size());
 	}
@@ -45,7 +45,7 @@ class CustomerApplicationTests
 	@Test
 	public void saveCustomerTest()
 	{
-		Customer customer = new Customer(22, "xyz","546477","xyz1@gamil","Kalyan","xyz123");
+		Customer customer = new Customer("22", "xyz","546477","xyz1@gamil","Kalyan","xyz123");
 		when(repository.save(customer)).thenReturn(customer);
 		assertEquals(customer, service.addCustomer(customer));
 	}
@@ -53,7 +53,7 @@ class CustomerApplicationTests
 	@Test
 	public void deleteCustomerTest() 
 	{
-		Customer customer = new Customer(22, "xyz","546477","xyz1@gamil","Kalyan","xyz123");
+		Customer customer = new Customer("22", "xyz","546477","xyz1@gamil","Kalyan","xyz123");
 		service.deleteCustomer(customer);
 		verify(repository, times(1)).delete(customer);
 	}

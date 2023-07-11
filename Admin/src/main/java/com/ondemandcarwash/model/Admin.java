@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Admin 
 {
 	@Id
-	private int aId;
+	private String aId;
 	private String adminName;
 	private String aEmail;
 	private String aPassword;
@@ -17,7 +17,7 @@ public class Admin
 		
 	}
 
-	public Admin(int aId, String adminName, String aEmail, String aPassword) {
+	public Admin(String aId, String adminName, String aEmail, String aPassword) {
 		super();
 		this.aId = aId;
 		this.adminName = adminName;
@@ -25,11 +25,11 @@ public class Admin
 		this.aPassword = aPassword;
 	}
 
-	public int getaId() {
+	public String getaId() {
 		return aId;
 	}
 
-	public void setaId(int aId) {
+	public void setaId(String aId) {
 		this.aId = aId;
 	}
 

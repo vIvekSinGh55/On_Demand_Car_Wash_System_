@@ -35,7 +35,7 @@ public class RatingService
 
 	
 	//For deleting rating by Id
-	public void deleteRatingById(int id) 
+	public void deleteRatingById(String id) 
 	{
 		ratingRepository.deleteById(id);
 		

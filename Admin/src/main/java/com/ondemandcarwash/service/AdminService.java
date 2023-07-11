@@ -37,7 +37,7 @@ public class AdminService implements UserDetailsService
 	}
 	
 	//For deleting By Id
-	public void deleteById(int id) 
+	public void deleteById(String id) 
 	{
 		adminRepository.deleteById(id);
 				

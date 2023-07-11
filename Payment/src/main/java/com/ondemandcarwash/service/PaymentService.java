@@ -14,8 +14,12 @@ public class PaymentService
 {
 	@Autowired
     private PaymentRepository repository;
+	
+	@Autowired
+	private Random random;
 
-    public Payments doPay(Payments payment){
+    public Payments doPay(Payments payment)
+    {
         payment.setPaymentStatus(paymentStatus());
         payment.setTxId(UUID.randomUUID().toString());
         return repository.save(payment);
@@ -23,6 +27,6 @@ public class PaymentService
 
     private String paymentStatus(){
     	
-        return new Random().nextBoolean()?"success":"failure";
+        return this.random.nextBoolean()?"success":"failure";
     }
 }

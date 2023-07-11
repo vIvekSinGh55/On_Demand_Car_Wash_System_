@@ -35,8 +35,8 @@ class AdminApplicationTests {
 	public void getAdminTest() 
 	{
 		when(repository.findAll()).thenReturn(Stream
-				.of(new Admin(37, "aman","aman@gmail.com","123"),
-						new Admin(38, "omi","omi@gmail.com","123"))
+				.of(new Admin("a37", "aman","aman@gmail.com","123"),
+						new Admin("a38", "omi","omi@gmail.com","123"))
 				.collect(Collectors.toList()));
 		assertEquals(2, service.getAdmins().size());
 	}
@@ -46,7 +46,7 @@ class AdminApplicationTests {
 	@Test
 	public void saveUserTest() 
 	{
-		Admin admin= new Admin(37, "aman","aman@gmail.com","123");
+		Admin admin= new Admin("a37", "aman","aman@gmail.com","123");
 		when(repository.save(admin)).thenReturn(admin);
 		assertEquals(admin, service.addAdmin(admin));
 	}
@@ -55,7 +55,7 @@ class AdminApplicationTests {
 	@Test
 	public void deleteCustomerTest() 
 	{
-		Admin admin = new Admin(37, "aman","aman@gmail.com","123");	
+		Admin admin = new Admin("a37", "aman","aman@gmail.com","123");	
 		service.deleteAdmin(admin); 
 		verify(repository, times(1)).delete(admin);
 	}

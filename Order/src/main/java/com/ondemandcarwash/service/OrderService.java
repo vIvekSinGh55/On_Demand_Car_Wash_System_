@@ -29,7 +29,7 @@ public class OrderService
 	}
 
 	//for deleting order
-	public void deleteById(int id) {
+	public void deleteById(String id) {
 		orderRepository.deleteById(id);
 		
 	}

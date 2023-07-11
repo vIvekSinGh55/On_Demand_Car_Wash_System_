@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Ratings 
 {
 	@Id
-	private int washerId;
+	private String userNameId;
 	private String status;
 	private int rating;
 	private String review;
@@ -18,25 +18,23 @@ public class Ratings
 		
 	}
 
-	
 
-	public Ratings(int washerId, String status, int rating, String review) {
+	public Ratings(String userNameId, String status, int rating, String review) {
 		super();
-		this.washerId = washerId;
+		this.userNameId = userNameId;
 		this.status = status;
 		this.rating = rating;
 		this.review = review;
 	}
 
 
-
-	public int getWasherId() {
-		return washerId;
+	public String getUserNameId() {
+		return userNameId;
 	}
 
 
-	public void setWasherId(int washerId) {
-		this.washerId = washerId;
+	public void setUserNameId(String userNameId) {
+		this.userNameId = userNameId;
 	}
 
 
@@ -70,14 +68,13 @@ public class Ratings
 	}
 
 
-
 	@Override
 	public String toString() {
-		return "Ratings [washerId=" + washerId + ", status=" + status + ", rating=" + rating + ", review=" + review
+		return "Ratings [userNameId=" + userNameId + ", status=" + status + ", rating=" + rating + ", review=" + review
 				+ "]";
 	}
 
-
+	
 	
 
 	

@@ -88,7 +88,7 @@ public class WasherController
 	
 	//Reading Washer by ID
 	@GetMapping("/allwashers/{id}")
-	public Optional<Washer> getWasherById(@PathVariable int id)
+	public Optional<Washer> getWasherById(@PathVariable String id)
 	{
 		return washerRepository.findById(id);
 				
@@ -97,7 +97,7 @@ public class WasherController
 	
 	//Updating Washer Data by Id
 	@PutMapping("/update/{id}")
-	public ResponseEntity<Object> updateWasher(@PathVariable int id, @RequestBody Washer washer)
+	public ResponseEntity<Object> updateWasher(@PathVariable String id, @RequestBody Washer washer)
 	{
 		
 			washerRepository.save(washer);
@@ -109,12 +109,21 @@ public class WasherController
 	
 	// Deleting Washer Data by Id 
 	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<Object> deleteWasher(@PathVariable int id)
+	public ResponseEntity<Object> deleteWasher(@PathVariable String id)
 	{
 		washerService.deleteById(id);
-		return new ResponseEntity<Object>("Washer deleted with id"+id,HttpStatus.OK);
+		return new ResponseEntity<Object>("Washer deleted with id "+id,HttpStatus.OK);
 	}
 	
+	
+
+	//Reading Washer by Email
+	@GetMapping("/WasherByEmail/{email}")
+	public Washer getWasherByEmail(@PathVariable String email)
+	{
+			return this.washerService.findWasherByEmail(email);
+	
+	}
 	
 //-------------------------------------------Order--------------------------------------------------//
 	
@@ -130,7 +139,7 @@ public class WasherController
 
 	//Reading orders By Id 
 	@GetMapping("/orders/{id}")
-	public Order getOrderById(@PathVariable("id") int id) 
+	public Order getOrderById(@PathVariable("id") String id) 
 	{
 		return restTemplate.getForObject("http://localhost:8084/order/orders/" + id, Order.class);
 	}

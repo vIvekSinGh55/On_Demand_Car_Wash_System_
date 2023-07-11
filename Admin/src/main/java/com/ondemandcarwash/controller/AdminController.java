@@ -73,16 +73,16 @@ public class AdminController
 	//authenticating washer
 	@PostMapping("/auth")
 	private ResponseEntity<?> authAdmin(@RequestBody Admin admin){
-		String email = admin.getaEmail();
-		String password = admin.getaPassword();
+		String aEmail = admin.getaEmail();
+		String aPassword = admin.getaPassword();
 		try {
-			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
+			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(aEmail, aPassword));
 				
 		} catch (Exception e) {
 				
-			return ResponseEntity.ok(new adminAuthResponse("Error during  admin Authentication"+ email));
+			return ResponseEntity.ok(new adminAuthResponse("Error during  admin Authentication"+ aEmail));
 		}
-		return ResponseEntity.ok(new adminAuthResponse("Successfully Authenticated admin"+ email));
+		return ResponseEntity.ok(new adminAuthResponse("Successfully Authenticated admin"+ aEmail));
 			
 	}
 	
@@ -105,7 +105,7 @@ public class AdminController
 	
 	//Reading Admin by ID
 	@GetMapping("/alladmins/{id}")
-	public Optional<Admin> getAdminById(@PathVariable int id)
+	public Optional<Admin> getAdminById(@PathVariable String id)
 	{
 		return adminRepository.findById(id);
 	}
@@ -113,7 +113,7 @@ public class AdminController
 	
 	//Updating Admin Data by Id
 	@PutMapping("/update/{id}")
-	public ResponseEntity<Object> updateAdmin(@PathVariable int id, @RequestBody Admin admin)
+	public ResponseEntity<Object> updateAdmin(@PathVariable String id, @RequestBody Admin admin)
 	{
 		
 		adminRepository.save(admin);
@@ -124,7 +124,7 @@ public class AdminController
 	
 	// Deleting Admin Data by Id 
 	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<Object> deleteAdmin (@PathVariable int id)
+	public ResponseEntity<Object> deleteAdmin (@PathVariable String id)
 	{	
 		adminService.deleteById(id);
 		return new ResponseEntity<Object>("Admininfo deleted with id"+id,HttpStatus.OK);		
@@ -198,7 +198,7 @@ public class AdminController
 	
 	//Updating Ratings by Id
 	@PutMapping("/ratingupdate/{id}")
-	public ResponseEntity<Object> updateRating(@PathVariable int id, @RequestBody Ratings rating)
+	public ResponseEntity<Object> updateRating(@PathVariable String id, @RequestBody Ratings rating)
 	{	
 		ratingRepository.save(rating);
 		return new ResponseEntity<Object>("Rating updated successfully with id " +id, HttpStatus.OK);	
@@ -207,7 +207,7 @@ public class AdminController
 	
 	//Read Rating By washerId
 	@GetMapping("/ratings/{id}")
-	public Optional<Ratings> getRatingById(@PathVariable int id) 
+	public Optional<Ratings> getRatingById(@PathVariable String id) 
 	{
 		return ratingRepository.findById(id);
 	}
@@ -216,7 +216,7 @@ public class AdminController
 	
 	// Deleting Rating by washerId
 	@DeleteMapping("/deleterating/{id}")
-	public ResponseEntity<Object> deleteRating(@PathVariable int id) 
+	public ResponseEntity<Object> deleteRating(@PathVariable String id) 
 	{
 		ratingService.deleteRatingById(id);
 		return new ResponseEntity<Object>("Rating is deleted with id" + id, HttpStatus.OK);
@@ -239,7 +239,7 @@ public class AdminController
 	
 	//Remove Customer By Id
 	@DeleteMapping("/removecustomer/{id}")
-	public String removeCustomer(@PathVariable("id") int id) 
+	public String removeCustomer(@PathVariable("id") String id) 
 	{
 		restTemplate.delete("http://Customer-Service/customer/delete/" +id , String.class);
 		return "Customer is successfully Removed " + id;
@@ -263,7 +263,7 @@ public class AdminController
 
 	//Remove Washer By Id
 	@DeleteMapping("/removewasher/{id}")
-	public String removeWasher(@PathVariable("id") int id) 
+	public String removeWasher(@PathVariable("id") String id) 
 	{
 		restTemplate.delete("http://Washer-Service/washer/delete/" +id , String.class);
 		return "Washer is successfully Removed " + id;
@@ -282,14 +282,14 @@ public class AdminController
 	
 	//Reading orders By id
 	@GetMapping("/allorders/{id}")
-	public Order getOrderById (@PathVariable("id") int id)
+	public Order getOrderById (@PathVariable("id") String id)
 	{
 		return restTemplate.getForObject("http://Order-Service/order/orders/"+id , Order.class);
 	}
 	
 	//Cancel Order By Id
 	@DeleteMapping("/removeorder/{id}")
-	public String removeOrder(@PathVariable("id") int id) 
+	public String removeOrder(@PathVariable("id") String id) 
 	{
 		restTemplate.delete("http://Order-Service/order/delete/" +id , String.class);
 		return "Order is successfully Cancelled " + id;

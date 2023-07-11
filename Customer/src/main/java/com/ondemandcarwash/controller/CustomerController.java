@@ -99,7 +99,7 @@ public class CustomerController
 	
 	//Reading Customer by ID
 	@GetMapping("/allcustomers/{id}")
-	public Optional<Customer> getCustomerById(@PathVariable int id)
+	public Optional<Customer> getCustomerById(@PathVariable String id)
 	{
 		return customerRepository.findById(id);
 	}
@@ -107,7 +107,7 @@ public class CustomerController
 	
 	//Updating Customer Data by Id
 	@PutMapping("/update/{id}")
-	public ResponseEntity<Object> updateCustomer(@PathVariable int id, @RequestBody Customer customer)
+	public ResponseEntity<Object> updateCustomer(@PathVariable String id, @RequestBody Customer customer)
 	{
 		
 		customerRepository.save(customer);
@@ -118,12 +118,19 @@ public class CustomerController
 	
 	// Deleting Customer Data by Id 
 	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<Object> deleteCustomer (@PathVariable int id)
+	public ResponseEntity<Object> deleteCustomer (@PathVariable String id)
 	{
 		
-			customerService.deleteById(id);
-			return new ResponseEntity<Object>("user deleted with id"+id,HttpStatus.OK);
+		customerService.deleteById(id);
+		return new ResponseEntity<Object>("user deleted with id"+id,HttpStatus.OK);
 		
+	}
+	
+	//Reading Customer by Email
+	@GetMapping("/CustomerByEmail/{email}")
+	public Customer getCustomerByEmail(@PathVariable String email)
+	{
+			return customerRepository.findByEmail(email);
 	}
 	
 	//---------------------------------------Order-------------------------------------------------//
@@ -139,7 +146,7 @@ public class CustomerController
 	
 	// for Deleting Order
 	@DeleteMapping("/cancelorder/{id}")
-	public String deleteOrder(@PathVariable("id") int id) 
+	public String deleteOrder(@PathVariable("id") String id) 
 	{
 		restTemplate.delete("http://Order-Service/order/delete/" +id , String.class);
 		return "Your Order is successfully Canceled " + id;

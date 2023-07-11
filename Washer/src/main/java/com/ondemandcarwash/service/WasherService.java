@@ -37,7 +37,7 @@ public class WasherService implements UserDetailsService
 	}
 
 	//For deleting By Id
-	public void deleteById(int id)
+	public void deleteById(String id)
 	{
 		washerRepository.deleteById(id);
 		
@@ -49,6 +49,12 @@ public class WasherService implements UserDetailsService
 		washerRepository.delete(washer);
 	}
 	
+	
+	//For get washer by email_Id
+	public Washer findWasherByEmail(String email) 
+	{
+		return this.washerRepository.findByEmail(email);
+	}
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

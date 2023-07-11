@@ -35,8 +35,8 @@ class WasherApplicationTests
 	{
 		
 		when(repository.findAll()).thenReturn(Stream
-				.of(new Washer(22, "xyz","xyz1@gamil","546477","Kalyan","xyz123"),
-						new Washer(12, "Nikhil","nikhil@gamil","986543","Thane","nikhil123"))
+				.of(new Washer("B22", "xyz","xyz1@gamil","546477","Kalyan","xyz123"),
+						new Washer("B12", "Nikhil","nikhil@gamil","986543","Thane","nikhil123"))
 				.collect(Collectors.toList()));
 		assertEquals(2, service.getWashers().size());
 	}
@@ -44,7 +44,7 @@ class WasherApplicationTests
 	@Test
 	public void saveWasherTest()
 	{
-		Washer washer = new Washer(12, "Nikhil","nikhil@gamil","986543","Thane","nikhil123");
+		Washer washer = new Washer("W12", "Nikhil","nikhil@gamil","986543","Thane","nikhil123");
 		when(repository.save(washer)).thenReturn(washer);
 		assertEquals(washer, service.addWasher(washer));
 	}
@@ -52,7 +52,7 @@ class WasherApplicationTests
 	@Test
 	public void deleteWasherTest() 
 	{
-		Washer washer = new Washer(12, "Nikhil","nikhil@gamil","986543","Thane","nikhil123");
+		Washer washer = new Washer("W12", "Nikhil","nikhil@gamil","986543","Thane","nikhil123");
 		service.deleteWasher(washer);
 		verify(repository, times(1)).delete(washer);
 	}

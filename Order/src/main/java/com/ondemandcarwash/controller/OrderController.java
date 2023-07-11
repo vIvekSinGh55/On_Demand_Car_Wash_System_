@@ -62,7 +62,7 @@ public class OrderController {
 	
 	// Reading Order by id
 	@GetMapping("/orders/{id}")
-	public Optional<Order> getCustomerById(@PathVariable int id) 
+	public Optional<Order> getCustomerById(@PathVariable String id) 
 	{
 		return orderRepository.findById(id);
 
@@ -70,7 +70,7 @@ public class OrderController {
 	
 	// Deleting order by Id
 	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<Object> deleteOrder(@PathVariable int id)
+	public ResponseEntity<Object> deleteOrder(@PathVariable String id)
 	{
 		orderService.deleteById(id);
 		return new ResponseEntity<Object>("Order deleted with id" + id, HttpStatus.OK);
