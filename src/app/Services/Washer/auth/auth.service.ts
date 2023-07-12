@@ -42,4 +42,9 @@ export class AuthService {
   getToken(){ 
     return localStorage.getItem('washer')
   }
+
+  /* get Washer By Email */
+  getWasherByEmail( email:String): Observable<any>{
+    return this.http.get(`${washerBaseURL}/washer/WasherByEmail/${email}`)
+  } 
 }

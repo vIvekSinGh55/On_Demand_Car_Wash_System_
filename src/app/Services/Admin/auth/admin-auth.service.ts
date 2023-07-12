@@ -37,4 +37,8 @@ export class AdminAuthService {
   getToken(){ 
     return localStorage.getItem('admin')
   }
+  /* get Admin By Email */
+  getAdminByaEmail( aEmail:String): Observable<any>{
+    return this.http.get(`${adminBaseURL}/admin/AdminByEmail/${aEmail}`)
+  } 
 }

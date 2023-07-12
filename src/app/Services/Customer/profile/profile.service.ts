@@ -26,4 +26,8 @@ export class ProfileService {
     return this.http.get(`${customerBaseURL}/customer/allpacks/`);
   }
 
+  /* get Customer By Email */
+  getCustomerByEmail( email:String): Observable<any>{
+    return this.http.get(`${customerBaseURL}/customer/CustomerByEmail/${email}`)
+  }  
 }

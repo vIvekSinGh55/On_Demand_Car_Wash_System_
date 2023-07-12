@@ -13,9 +13,9 @@ export class LoginComponent implements OnInit {
 
   selected="Customer";
   emailError ='';
-  dbpassword ='vivek12';
   passwordError ='';
-  msg =' Have Successfully Logged in!';
+  msg = 'Have Successfully Logged in!';
+  oPassword = '';
 
   details=[] as any;
 
@@ -49,15 +49,16 @@ export class LoginComponent implements OnInit {
 
     if(customer.value.role == 'Customer'){
       let user = { email: customer.value.email, password : customer.value.password};
+      this.searchCustomerByEmail(user.email);
       this._auth.loginCustomer(user)
       .subscribe(
         res => {
           localStorage.setItem('customer',res)
           console.log(this.details[0].password)
-          if(customer.value.password == this.dbpassword){
+          if(user.password == this.oPassword){
             console.log(user)
           this.router.navigate(['/customerDashboard/customerHome'])
-          alert((this.msg));
+          alert(customer.value.email +' Have Successfully Logged in!');
           }
           else{
             alert("Bad Credential")
@@ -71,12 +72,20 @@ export class LoginComponent implements OnInit {
 
     if(customer.value.role == 'Washer'){
       let user = { email: customer.value.email, password : customer.value.password};
+      this.searchWasherByEmail(user.email);
       this._washerAuth.loginWasher(user)
       .subscribe(
         res => {
           localStorage.setItem('washer',res)
-          this.router.navigate(['/washerDashboard/washerHome'])
-          alert(this.msg );
+          console.log(this.details[0].password)
+          if(user.password == this.oPassword){
+            console.log(user)
+            this.router.navigate(['/washerDashboard/washerHome'])
+            alert(user.email +' Have Successfully Logged in!');
+          }
+          else{
+            alert("Bad Credential")
+          }
         },
         err => {this.emailError =err.error.email, this.passwordError = err.error.password
           alert("Invalid!")}
@@ -91,7 +100,29 @@ export class LoginComponent implements OnInit {
        err => console.log(err)
       )
     }
+   
+    searchCustomerByEmail(email:string): void {
+  
+      this._planService.getCustomerByEmail(email)
+        .subscribe({
+          next: (data) => {
+            this.oPassword = data.password;
+          },
+          error: (e) => console.error(e)
+        });
+    }
 
+
+    searchWasherByEmail(email:string): void {
+
+      this._washerAuth.getWasherByEmail(email)
+        .subscribe({
+          next: (data) => {
+            this.oPassword = data.password;
+          },
+          error: (e) => console.error(e)
+        });
+    }
 
 
 }

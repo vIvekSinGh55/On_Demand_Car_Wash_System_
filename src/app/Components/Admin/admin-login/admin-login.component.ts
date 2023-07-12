@@ -11,6 +11,7 @@ export class AdminLoginComponent implements OnInit {
 
   emailError ='';
   passwordError ='';
+  oPassword = '';
 
   constructor(private router: Router,  private _adminAuth: AdminAuthService) { }
 
@@ -23,12 +24,19 @@ export class AdminLoginComponent implements OnInit {
     this.emailError='',
     this.passwordError='';
     console.log(data.value);
-
+    this.searchAdminByEmail(data.value.aEmail)
     this._adminAuth.loginAdmin(data.value)
     .subscribe(
       res => {
         localStorage.setItem('admin',res.admin)
-        this.router.navigate(['/adminDashboard/adminHome'])
+        if(data.value.aPassword == this.oPassword){
+          console.log(data.value)
+          this.router.navigate(['/adminDashboard/adminHome'])
+          alert(data.value.aEmail +' Have Successfully Logged in!');
+        }
+        else{
+          alert("Bad Credential")
+        }
       },
       err => {
         this.emailError = err.error.email,
@@ -36,4 +44,17 @@ export class AdminLoginComponent implements OnInit {
       }
     )  
   }
+
+  searchAdminByEmail(aEmail:string): void {
+
+    this._adminAuth.getAdminByaEmail(aEmail)
+      .subscribe({
+        next: (data) => {
+          this.oPassword = data.aPassword;
+        },
+        error: (e) => console.error(e)
+      });
+  }
+
+
 }
